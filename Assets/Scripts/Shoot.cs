@@ -6,7 +6,7 @@ public class Shoot : MonoBehaviour {
     public GameObject bullet;
     public Transform spawnlocation;
     private float rightDeadZone = 0.3f;
-
+    private int count = 0;
     // Use this for initialization
     void Start () {
 	
@@ -18,10 +18,21 @@ public class Shoot : MonoBehaviour {
 
     void FixedUpdate()
     {
-        if(CheckShoot())
+
+        if (CheckShoot())
         {
-            CreateBullet();
+            if (count == 3)
+            {
+                CreateBullet();
+                count = 0;
+            }
+            else
+            {
+                count++;
+            }
+            
         }
+
     }
 
     bool CheckShoot()

@@ -5,13 +5,20 @@ using UnityEngine.UI;
 public class HPUpdate : MonoBehaviour {
     // Use this for initialization
     public Text t;
+    public PlayerBehaviour Player;
 	void Start () {
-	
+        t = (Text)this.gameObject.GetComponent("Text");
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        Enemy e= this.gameObject.GetComponent<Enemy>();
-        t.text = e.hp+"";
+        if(Player!=null)
+        {
+            t.text = "HP: " + Player.hp;
+        }
+        else
+        {
+            t.text = "HP: 0";
+        }
 	}
 }

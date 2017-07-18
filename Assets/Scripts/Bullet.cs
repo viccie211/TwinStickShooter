@@ -27,14 +27,22 @@ public class Bullet : MonoBehaviour {
     bool checkTooFar()
     {
         Transform player = GameObject.FindGameObjectWithTag("Player").transform;
-        Vector3 dif = transform.position - player.position;
-        if(dif.magnitude>maxDistance)
+        if (player != null)
         {
-            return true;
+
+            Vector3 dif = transform.position - player.position;
+            if (dif.magnitude > maxDistance)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         else
         {
-            return false;
+            return true;
         }
     }
 }

@@ -1,13 +1,16 @@
 ﻿using UnityEngine;
-using System.Collections;
+using System.Collections.Generic;
 
 public class SpawnEnemies : MonoBehaviour
 {
 
     // Use this for initialization
-    public int tick = 0;
-    public float chance = 0.0f;
-
+    public int wave=1;
+    public int spawnedThisWave = 0;
+    public int spawnAtSameTime = 4;
+    public int maxAlive = 100;
+    public int tick = 25;
+    public int totalThisWave = 2;
     public Transform[] spawnlocations;
     public GameObject spawnedEnemy;
     void Start()
@@ -22,27 +25,48 @@ public class SpawnEnemies : MonoBehaviour
     }
     void FixedUpdate()
     {
-        if (GameObject.FindObjectsOfType(typeof(Enemy)).Length < 60)
+        if(tick>0)
         {
-            chance = 1 - (2 / (Mathf.Exp(0.00005f * tick) + 1));
-            float usedChance;
-            if (chance > 0.1f)
+            tick--;
+        }
+        else
+        {
+            spawnWave();
+            tick = 25;
+        }
+
+    }
+
+    void spawnWave()
+    {
+        float w = (float)wave;
+        float wsqd = Mathf.Pow(w,2f);
+        totalThisWave = (int)Mathf.Ceil(0.5f * wsqd);
+        if (GameObject.FindObjectsOfType(typeof(Enemy)).Length < maxAlive)
+        {
+            if (spawnedThisWave < totalThisWave)
             {
-                usedChance = chance;
-            }
-            else
-            {
-                usedChance = 0.01f;
-            }
-            float act = Random.Range(0f, 1f);
-            if (act <= usedChance)
-            {
-                Transform spawnlocation = spawnlocations[Random.Range(0, spawnlocations.Length)];
-                spawnedEnemy = (GameObject)Instantiate(Resources.Load("Placeholder_enemy"));
-                spawnedEnemy.transform.position = spawnlocation.position;
-                spawnedEnemy.transform.rotation = spawnlocation.rotation;
+                int i = 0;
+                List<Transform> spawnLocationsList = new List<Transform>(spawnlocations);
+                while (spawnedThisWave < totalThisWave && i < spawnAtSameTime)
+                {
+                    int index = Random.Range(0, spawnLocationsList.Count);
+                    Transform spawnlocation = spawnLocationsList[index];
+                    spawnedEnemy = (GameObject)Instantiate(Resources.Load("Placeholder_enemy"));
+                    spawnedEnemy.transform.position = spawnlocation.position;
+                    spawnedEnemy.transform.rotation = spawnlocation.rotation;
+                    spawnLocationsList.Remove(spawnlocation);
+                    spawnedThisWave++;
+                    i++;
+                }
             }
         }
-        tick++;
+    }
+
+    public void advanceWave()
+    {
+        wave++;
+        spawnedThisWave = 0;
+        tick = 70;
     }
 }

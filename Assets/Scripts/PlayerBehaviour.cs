@@ -8,6 +8,7 @@ public class PlayerBehaviour : MonoBehaviour {
     private int count = 0;
     public int hp = 20;
     public int cooldown = 0;
+    public int killedThisWave = 0;
     // Use this for initialization
     void Start()
     {
@@ -120,6 +121,15 @@ public class PlayerBehaviour : MonoBehaviour {
             {
                 Object.Destroy(this.gameObject);
             }
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D c)
+    {
+        if(c.gameObject.tag=="healthPickup")
+        {
+            hp += 2;
+            Object.Destroy(c.gameObject);
         }
     }
 }

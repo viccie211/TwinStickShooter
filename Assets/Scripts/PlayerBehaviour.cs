@@ -107,7 +107,7 @@ public class PlayerBehaviour : MonoBehaviour {
         bullet.transform.rotation = spawnlocation.rotation;
     }
 
-    void OnCollisionStay2D(Collision2D c)
+    void OnCollisionStay(Collision c)
     {
         if (c.gameObject.tag == "Enemy")
         {
@@ -124,7 +124,7 @@ public class PlayerBehaviour : MonoBehaviour {
         }
     }
 
-    void OnCollisionEnter2D(Collision2D c)
+    void OnCollisionEnter(Collision c)
     {
         if(c.gameObject.tag=="healthPickup")
         {

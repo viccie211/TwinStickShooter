@@ -48,7 +48,7 @@ using System.Collections;
             doMove();
         }
 
-        void OnCollisionEnter2D(Collision2D c)
+        void OnCollisionEnter(Collision c)
         {
             if (c.gameObject.GetComponent<Bullet>())
             {
